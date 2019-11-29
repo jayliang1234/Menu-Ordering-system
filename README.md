@@ -1,0 +1,113 @@
+# Menu-Ordering-system
+Displays the menu, you can choose what you want to order, then adds shows you your total with tax included.
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+struct menuItemType
+{
+	string menuItem;
+	double menuPrice;
+	int count;
+};
+void getData(menuItemType menuList[], menuItemType counter[]);
+void showMenu(menuItemType menuList[], int x);
+void printCheck(menuItemType menuList[],menuItemType count[], int menuOrder[], int x);
+int main()
+{
+	const int menuItems = 8;
+	menuItemType menuList[menuItems];
+	menuItemType count[menuItems];
+	int menuOrder[menuItems] = { 0 };
+	int orderChoice = 0;
+	bool ordering = true;
+	getData(menuList,count);
+	showMenu(menuList, menuItems);
+	while (ordering)
+	{
+		cout << "Enter the number for the item you would\n"
+			<< "like to order, or enter [0] to complete your order." << endl;
+		cin >> orderChoice;
+		if (orderChoice > 0 && orderChoice <= menuItems)
+		{
+			menuOrder[orderChoice - 1] += 1;
+		}
+		else
+			ordering = false;
+	}
+	printCheck(menuList,count, menuOrder, menuItems);
+	system("pause");
+	return 0;
+}
+void getData(menuItemType menuList[], menuItemType counter[])
+{
+	menuItemType plainEgg;
+	menuItemType baconEgg;
+	menuItemType muffin;
+	menuItemType frenchToast;
+	menuItemType fruitBasket;
+	menuItemType cereal;
+	menuItemType coffee;
+	menuItemType tea;
+	plainEgg.menuItem = "Plain Egg";
+	plainEgg.menuPrice = 1.45;
+	baconEgg.menuItem = "Bacon and Egg";
+	baconEgg.menuPrice = 2.45;
+	muffin.menuItem = "Muffin";
+	muffin.menuPrice = 0.99;
+	frenchToast.menuItem = "French Toast";
+	frenchToast.menuPrice = 1.99;
+	fruitBasket.menuItem = "Fruit Basket";
+	fruitBasket.menuPrice = 2.49;
+	cereal.menuItem = "Cereal";
+	cereal.menuPrice = 0.69;
+	coffee.menuItem = "Coffee";
+	coffee.menuPrice = 0.50;
+	tea.menuItem = "Tea";
+	tea.menuPrice = 0.75;
+	menuList[0] = plainEgg;
+	menuList[1] = baconEgg;
+	menuList[2] = muffin;
+	menuList[3] = frenchToast;
+	menuList[4] = fruitBasket;
+	menuList[5] = cereal;
+	menuList[6] = coffee;
+	menuList[7] = tea;
+}
+void showMenu(menuItemType menuList[], int x)
+{
+	int count;
+	cout << "Welcome to the restaurant" << endl;
+	cout << "What would you to order?" << endl;
+	for (count = 0; count < x; count++)
+	{
+		cout << setw(2) << left << "[" << count + 1 << "]"
+			<< menuList[count].menuItem << '$'
+			<< menuList[count].menuPrice << endl;
+	}
+}
+void printCheck(menuItemType menuList[], menuItemType counter[], int menuOrder[], int menuItems)
+{
+	double AmountTotal = 0;
+	double Tax = 0;
+	double AmountDue;
+	const double TAX = .05;
+	cout << "Thanks for eating" << "Customer check: " << endl;
+	for (int i = 0; i < menuItems; i++)
+	{
+
+		if (menuOrder[i] > 0) {
+
+			cout << setprecision(3) << setw(15) << left << menuList[i].menuItem<< menuOrder[i] <<"    "
+				<< '$' << (menuList[i].menuPrice * menuOrder[i]) << endl;
+			AmountTotal += (menuList[i].menuPrice * menuOrder[i]);
+		
+		}
+		
+	}
+	Tax = AmountTotal * TAX;
+	AmountDue=AmountTotal +Tax;
+	cout << setw(20) << left << "AmountTotal"<<'$'<< AmountTotal << endl
+		<< setw(20) << left << "Tax" << '$' << Tax << endl
+		<< setw(20) << left << "AmountDue" << '$' << AmountDue << endl;
+}
